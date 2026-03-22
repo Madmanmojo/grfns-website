@@ -1,26 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-bg: #0a0a0f;
+  --color-neon-pink: #ff2d78;
+  --color-neon-cyan: #00fff0;
+  --color-neon-purple: #b026ff;
+  --color-dim: #888;
+  --color-border: #1a1a2e;
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-mono: 'Share Tech Mono', monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #0a0a0f;
+  color: #e0e0e0;
+  font-family: 'Share Tech Mono', monospace;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.06) 2px,
+    rgba(0,0,0,0.06) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Press Start 2P', monospace;
+  line-height: 1.6;
+}
+
+.neon-pink {
+  color: #ff2d78;
+  text-shadow: 0 0 10px #ff2d78, 0 0 20px #ff2d78, 0 0 40px #ff2d78;
+}
+.neon-cyan {
+  color: #00fff0;
+  text-shadow: 0 0 10px #00fff0, 0 0 20px #00fff0;
+}
+.neon-purple {
+  color: #b026ff;
+  text-shadow: 0 0 10px #b026ff, 0 0 20px #b026ff;
+}
+
+.neon-border-pink {
+  border: 1px solid #ff2d78;
+  box-shadow: 0 0 12px #ff2d78, inset 0 0 12px rgba(255,45,120,0.05);
+}
+.neon-border-cyan {
+  border: 1px solid #00fff0;
+  box-shadow: 0 0 12px #00fff0, inset 0 0 12px rgba(0,255,240,0.05);
+}
+.neon-border-purple {
+  border: 1px solid #b026ff;
+  box-shadow: 0 0 12px #b026ff, inset 0 0 12px rgba(176,38,255,0.05);
+}
+
+/* Grid background */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(0,255,240,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,240,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Glitch effect */
+@keyframes glitch-clip-1 {
+  0%   { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 0); }
+  50%  { clip-path: inset(55% 0 15% 0); transform: translate(3px, 0); }
+  100% { clip-path: inset(80% 0 5%  0); transform: translate(-3px, 0); }
+}
+@keyframes glitch-clip-2 {
+  0%   { clip-path: inset(50% 0 30% 0); transform: translate(3px, 0); }
+  50%  { clip-path: inset(10% 0 70% 0); transform: translate(-3px, 0); }
+  100% { clip-path: inset(35% 0 45% 0); transform: translate(3px, 0); }
+}
+
+.glitch { position: relative; display: inline-block; }
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  font-family: 'Press Start 2P', monospace;
+  font-size: inherit;
+}
+.glitch::before {
+  color: #00fff0;
+  animation: glitch-clip-1 2.5s infinite linear alternate-reverse;
+  opacity: 0.75;
+}
+.glitch::after {
+  color: #ff2d78;
+  animation: glitch-clip-2 3.5s infinite linear alternate-reverse;
+  opacity: 0.75;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.cursor::after {
+  content: '_';
+  animation: cursor-blink 1s step-end infinite;
+}
+
+@keyframes flicker {
+  0%,100% { opacity: 1; }
+  92%     { opacity: 1; }
+  93%     { opacity: 0.85; }
+  94%     { opacity: 1; }
+  96%     { opacity: 0.9; }
+  97%     { opacity: 1; }
+}
+.flicker { animation: flicker 6s infinite; }
+
+/* Blog prose */
+.prose-cyber { color: #e0e0e0; }
+.prose-cyber h1, .prose-cyber h2, .prose-cyber h3 {
+  font-family: 'Press Start 2P', monospace;
+  color: #00fff0;
+  margin: 2rem 0 1rem;
+  text-shadow: 0 0 10px #00fff0;
+}
+.prose-cyber p  { margin: 1.2rem 0; }
+.prose-cyber a  { color: #ff2d78; text-decoration: underline; }
+.prose-cyber ul { list-style: none; padding-left: 1.5rem; }
+.prose-cyber ul li::before { content: '> '; color: #ff2d78; }
+.prose-cyber code {
+  background: rgba(0,255,240,0.08);
+  border: 1px solid #00fff0;
+  padding: 0.15em 0.4em;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9em;
+}
+.prose-cyber pre {
+  background: #0d0d1a;
+  border: 1px solid #b026ff;
+  box-shadow: 0 0 10px rgba(176,38,255,0.3);
+  padding: 1.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+.prose-cyber blockquote {
+  border-left: 3px solid #ff2d78;
+  padding-left: 1.5rem;
+  color: #888;
 }
